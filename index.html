@@ -551,7 +551,7 @@ function tekenTrainingen() {
   return [
     h('div', { class: 'kaart' },
       h('div', { class: 'twee' },
-        h('label', { class: 'veld' }, 'Km per training', fKm),
+        h('label', { class: 'veld' }, 'Km heen en terug', fKm),
         h('label', { class: 'veld' }, 'Vergoeding per training', fVerg)),
       h('div', { class: 'klein' }, 'Nieuwe dagen krijgen deze waarden. Bedrag = km × ' + euro(tarief()) + ' + vergoeding.'),
       eigen && h('button', { class: 'tekstknop', onclick: () => { S.std = null; bewaar(); teken(); } },
@@ -608,7 +608,7 @@ function bewerkTraining(t) {
     h('h3', null, 'Training wijzigen'),
     h('label', { class: 'veld' }, 'Datum', fDatum),
     h('div', { class: 'twee' },
-      h('label', { class: 'veld' }, 'Km', fKm),
+      h('label', { class: 'veld' }, 'Km heen en terug', fKm),
       h('label', { class: 'veld' }, 'Vergoeding', fVerg)),
     h('label', { class: 'veld' }, 'Bedrag (km × ' + euro(tarief()) + ' + vergoeding)', fBedrag),
     h('label', { class: 'veld' }, 'Opmerking', fOpm),
