@@ -1,0 +1,728 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b4a8f">
+<meta name="robots" content="noindex, nofollow">
+<title>SVZ Declaraties</title>
+<style>
+:root {
+  --blauw: #0b4a8f; --blauw-donker: #083a70; --blauw-licht: #e6eff9;
+  --bg: #f3f5f8; --vlak: #ffffff; --tekst: #14202e; --zacht: #5b6777; --lijn: #d9dfe7;
+  --rood: #b42318; --oranje: #b45309; --groen: #18794e;
+  --tabbalk: 64px;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --blauw: #6aa9ee; --blauw-donker: #4f93df; --blauw-licht: #17304d;
+    --bg: #0f151c; --vlak: #19212b; --tekst: #e8edf3; --zacht: #9aa7b6; --lijn: #2c3745;
+    --rood: #f97066; --oranje: #f5a94b; --groen: #4cc38a;
+  }
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  font: 16px/1.4 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg); color: var(--tekst);
+  -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: transparent;
+}
+button, input, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+.wrap { max-width: 560px; margin: 0 auto; padding: 0 16px; }
+
+header.kop { background: #0b4a8f; color: #fff; padding: calc(12px + env(safe-area-inset-top)) 0 12px; }
+header.kop .wrap { display: flex; align-items: center; gap: 12px; }
+header.kop h1 { font-size: 18px; margin: 0; flex: 1; line-height: 1.2; }
+header.kop small { display: block; font-weight: 400; opacity: .85; font-size: 13px; }
+header.kop button { background: transparent; border: 1px solid rgba(255,255,255,.6); color: #fff; border-radius: 8px; min-height: 40px; padding: 0 12px; }
+.demo { background: #fdecc8; color: #5c3b00; font-size: 13px; padding: 6px 0; text-align: center; }
+
+main.wrap { padding-top: 16px; padding-bottom: calc(var(--tabbalk) + 150px + env(safe-area-inset-bottom)); }
+h2 { font-size: 16px; margin: 20px 0 8px; }
+.kaart { background: var(--vlak); border: 1px solid var(--lijn); border-radius: 12px; padding: 14px; }
+.leeg { color: var(--zacht); text-align: center; padding: 28px 12px; }
+.klein { color: var(--zacht); font-size: 13px; }
+
+label.veld { display: block; margin-bottom: 14px; font-size: 14px; color: var(--zacht); }
+label.veld input, label.veld textarea {
+  display: block; width: 100%; margin-top: 4px; min-height: 48px; padding: 10px 12px;
+  border: 1px solid var(--lijn); border-radius: 10px; background: var(--vlak); color: var(--tekst); font-size: 16px;
+}
+label.veld input[readonly] { background: var(--bg); }
+label.veld textarea { min-height: 76px; resize: vertical; }
+input:focus-visible, textarea:focus-visible, button:focus-visible { outline: 2px solid var(--blauw); outline-offset: 2px; }
+.twee { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+.knop { min-height: 48px; border-radius: 10px; border: 1px solid var(--lijn); background: var(--vlak); padding: 0 16px; font-weight: 600; }
+.knop.hoofd { background: #0b4a8f; border-color: #0b4a8f; color: #fff; }
+.knop.gevaar { color: var(--rood); }
+.knop.breed { width: 100%; }
+.knop:disabled { opacity: .5; }
+.tekstknop { background: none; border: 0; color: var(--blauw); padding: 8px 0; min-height: 40px; text-decoration: underline; }
+.knoppen { display: flex; gap: 10px; margin-top: 8px; }
+.knoppen .knop { flex: 1; }
+.foutmelding { color: var(--rood); font-size: 14px; margin: 0 0 12px; }
+
+/* lijsten */
+.lijst { background: var(--vlak); border: 1px solid var(--lijn); border-radius: 12px; overflow: hidden; }
+.rij { display: flex; align-items: stretch; border-top: 1px solid var(--lijn); }
+.rij:first-child { border-top: 0; }
+.rij.kopregel { background: var(--bg); font-size: 13px; color: var(--zacht); align-items: center; }
+.rij.kopregel span { padding: 8px 12px 8px 0; flex: 1; }
+.vink { display: flex; align-items: center; justify-content: center; width: 52px; flex: none; min-height: 52px; }
+.vink input { width: 22px; height: 22px; accent-color: #0b4a8f; }
+.rijknop { flex: 1; min-width: 0; display: flex; align-items: center; gap: 10px; text-align: left; background: none; border: 0; padding: 10px 12px 10px 0; }
+.rijknop .midden { flex: 1; min-width: 0; }
+.rijknop .titel { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rijknop .sub { font-size: 13px; color: var(--zacht); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rijknop .bedrag { font-weight: 600; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.let-op { color: var(--oranje); }
+
+/* kalender */
+.kal-kop { display: flex; align-items: center; margin-bottom: 4px; }
+.kal-kop strong { flex: 1; text-align: center; text-transform: capitalize; }
+.kal-kop button { width: 44px; height: 40px; border-radius: 10px; border: 1px solid var(--lijn); background: var(--vlak); font-size: 20px; }
+.kal { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; }
+.kal .wd { text-align: center; font-size: 12px; color: var(--zacht); padding: 2px 0; }
+.kal button { position: relative; height: 40px; border-radius: 8px; border: 1px solid transparent; background: var(--bg); font-variant-numeric: tabular-nums; }
+.kal button.vandaag { border-color: var(--blauw); }
+.kal button.gekozen { background: #0b4a8f; color: #fff; font-weight: 700; }
+.kal button:disabled { opacity: .35; cursor: default; }
+.kal button.eerder::after { content: ""; position: absolute; left: 50%; bottom: 3px; width: 5px; height: 5px; margin-left: -2.5px; border-radius: 50%; background: var(--groen); }
+.kal button.gekozen.eerder::after { background: #fff; }
+
+/* vaste balken */
+.actiebalk { position: fixed; left: 0; right: 0; bottom: calc(var(--tabbalk) + env(safe-area-inset-bottom)); background: var(--vlak); border-top: 1px solid var(--lijn); padding: 10px 0; z-index: 5; }
+.actiebalk .wrap { display: flex; align-items: center; gap: 12px; }
+.actiebalk .som { flex: 1; font-size: 14px; color: var(--zacht); }
+.actiebalk .som b { display: block; font-size: 18px; color: var(--tekst); font-variant-numeric: tabular-nums; }
+.plus { position: fixed; right: max(16px, calc(50% - 264px)); bottom: calc(var(--tabbalk) + 16px + env(safe-area-inset-bottom)); width: 60px; height: 60px; border-radius: 50%; border: 0; background: #0b4a8f; color: #fff; font-size: 32px; line-height: 1; box-shadow: 0 4px 12px rgba(0,0,0,.3); z-index: 6; }
+body.met-actie .plus { bottom: calc(var(--tabbalk) + 86px + env(safe-area-inset-bottom)); }
+nav.tabs { position: fixed; left: 0; right: 0; bottom: 0; background: var(--vlak); border-top: 1px solid var(--lijn); padding-bottom: env(safe-area-inset-bottom); z-index: 5; }
+nav.tabs .wrap { display: flex; padding: 0; }
+nav.tabs button { flex: 1; height: var(--tabbalk); background: none; border: 0; border-top: 3px solid transparent; color: var(--zacht); font-size: 14px; font-weight: 600; }
+nav.tabs button[aria-selected="true"] { color: var(--blauw); border-top-color: var(--blauw); }
+
+/* dialoog als blad van onderaf */
+dialog { border: 0; padding: 0; margin: auto auto 0; width: 100%; max-width: 560px; max-height: 92dvh; border-radius: 16px 16px 0 0; background: var(--vlak); color: var(--tekst); }
+dialog::backdrop { background: rgba(0,0,0,.5); }
+dialog .inhoud { padding: 18px 16px calc(18px + env(safe-area-inset-bottom)); overflow: auto; max-height: 92dvh; }
+dialog h3 { margin: 0 0 14px; font-size: 18px; }
+@media (min-width: 600px) { dialog { margin: auto; border-radius: 16px; } }
+table.overzicht { width: 100%; border-collapse: collapse; font-size: 14px; margin-bottom: 12px; }
+table.overzicht td { padding: 6px 0; border-bottom: 1px solid var(--lijn); vertical-align: top; }
+table.overzicht td:last-child { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; padding-left: 10px; }
+table.overzicht tr.totaal td { font-weight: 700; border-bottom: 0; font-size: 16px; }
+table.overzicht tr.groep td { font-weight: 700; padding-top: 14px; }
+.bijlage-info { display: flex; align-items: center; gap: 10px; margin: -6px 0 14px; font-size: 14px; }
+.bijlage-info img { width: 56px; height: 56px; object-fit: cover; border-radius: 8px; border: 1px solid var(--lijn); }
+
+.bezig { position: fixed; inset: 0; background: rgba(0,0,0,.45); display: flex; align-items: center; justify-content: center; z-index: 100; }
+.bezig div { background: var(--vlak); padding: 20px 24px; border-radius: 12px; display: flex; gap: 12px; align-items: center; }
+.bezig i { width: 22px; height: 22px; border: 3px solid var(--lijn); border-top-color: var(--blauw); border-radius: 50%; animation: draai 1s linear infinite; }
+@keyframes draai { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .bezig i { animation: none; } }
+
+details.inzending { border-top: 1px solid var(--lijn); padding: 12px 14px; }
+details.inzending:first-child { border-top: 0; }
+details.inzending summary { display: flex; gap: 10px; cursor: pointer; list-style: none; min-height: 40px; align-items: center; }
+details.inzending summary::-webkit-details-marker { display: none; }
+details.inzending summary .midden { flex: 1; min-width: 0; }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<dialog id="dlg"><div class="inhoud" id="dlg-inhoud"></div></dialog>
+
+<script>
+'use strict';
+/* ====== Instelling: plak hier de web-app-URL van het Google Apps Script ====== */
+const API_URL = '';
+/* Zonder URL draait de pagina in demomodus: er wordt niets verstuurd, de code is 123456. */
+const DEMO = !API_URL;
+
+/* ---------- hulpfuncties ---------- */
+const $app = document.getElementById('app');
+const $dlg = document.getElementById('dlg');
+const $dlgInhoud = document.getElementById('dlg-inhoud');
+const pad = n => String(n).padStart(2, '0');
+const iso = d => d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+const vandaag = () => iso(new Date());
+const nlDatum = s => s.slice(8, 10) + '-' + s.slice(5, 7) + '-' + s.slice(0, 4);
+const dagNaam = s => new Date(s + 'T12:00:00').toLocaleDateString('nl-NL', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+const euroFmt = new Intl.NumberFormat('nl-NL', { style: 'currency', currency: 'EUR' });
+const euro = n => euroFmt.format(n);
+const nlGetal = n => String(n).replace('.', ',');
+const nieuwId = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+
+function getal(v) {
+  const s = String(v == null ? '' : v).trim().replace(/\s/g, '').replace(',', '.');
+  if (s === '' || !/^\d+(\.\d+)?$/.test(s)) return NaN;
+  return Number(s);
+}
+
+// Bouwt een element; tekst gaat altijd via textContent, nooit als HTML.
+function h(tag, attrs, ...kinderen) {
+  const el = document.createElement(tag);
+  for (const k in (attrs || {})) {
+    const v = attrs[k];
+    if (v == null || v === false) continue;
+    if (k === 'class') el.className = v;
+    else if (k.startsWith('on')) el.addEventListener(k.slice(2), v);
+    else if (k in el && k !== 'list' && k !== 'form') el[k] = v;
+    else el.setAttribute(k, v === true ? '' : v);
+  }
+  for (const kind of kinderen.flat(Infinity)) {
+    if (kind == null || kind === false) continue;
+    el.append(kind.nodeType ? kind : document.createTextNode(String(kind)));
+  }
+  return el;
+}
+
+/* ---------- opslag op het toestel ---------- */
+const lees = (k, std) => { try { const v = localStorage.getItem('svz.' + k); return v ? JSON.parse(v) : std; } catch (e) { return std; } };
+const schrijf = (k, v) => { try { localStorage.setItem('svz.' + k, JSON.stringify(v)); } catch (e) {} };
+
+const S = {
+  sessie: lees('sessie', null),          // { token, email, naam, km, vergoeding, kmTarief }
+  onkosten: lees('onkosten', []),        // { id, datum, omschrijving, bedrag, bijlageNaam, sel }
+  trainingen: lees('trainingen', []),    // { id, datum, km, vergoeding, opmerking, sel }
+  ingediend: lees('ingediend', []),      // { ref, soort, tijd, totaal, regels }
+  std: lees('std', null),                // eigen standaard { km, vergoeding } of null
+  tab: 'onkosten',
+  maand: new Date(new Date().getFullYear(), new Date().getMonth(), 1)
+};
+function bewaar() {
+  schrijf('sessie', S.sessie); schrijf('onkosten', S.onkosten); schrijf('trainingen', S.trainingen);
+  schrijf('ingediend', S.ingediend); schrijf('std', S.std);
+}
+
+// Bijlagen staan in IndexedDB, want foto's passen niet in localStorage.
+function db() {
+  return new Promise((ok, fout) => {
+    const r = indexedDB.open('svz-declaraties', 1);
+    r.onupgradeneeded = () => r.result.createObjectStore('bijlagen');
+    r.onsuccess = () => ok(r.result);
+    r.onerror = () => fout(r.error);
+  });
+}
+async function bijlageActie(modus, fn) {
+  const d = await db();
+  return new Promise((ok, fout) => {
+    const tx = d.transaction('bijlagen', modus);
+    const r = fn(tx.objectStore('bijlagen'));
+    tx.oncomplete = () => { d.close(); ok(r && r.result); };
+    tx.onerror = tx.onabort = () => { d.close(); fout(tx.error); };
+  });
+}
+const bijlageZet = (id, blob) => bijlageActie('readwrite', s => s.put(blob, id));
+const bijlageHaal = id => bijlageActie('readonly', s => s.get(id));
+const bijlageWis = id => bijlageActie('readwrite', s => s.delete(id));
+const bijlagenLeeg = () => bijlageActie('readwrite', s => s.clear());
+
+async function wisAlles() {
+  S.sessie = null; S.onkosten = []; S.trainingen = []; S.ingediend = []; S.std = null;
+  bewaar();
+  try { await bijlagenLeeg(); } catch (e) {}
+}
+
+/* ---------- server ---------- */
+async function api(actie, gegevens) {
+  const req = Object.assign({ actie: actie }, gegevens);
+  let uit;
+  if (DEMO) {
+    uit = await demoServer(req);
+  } else {
+    let antwoord;
+    try {
+      // text/plain voorkomt een CORS-voorcontrole waar Apps Script niet op antwoordt.
+      antwoord = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(req) });
+      uit = await antwoord.json();
+    } catch (e) {
+      throw new Error('Geen verbinding met de server. Controleer je internet en probeer het opnieuw.');
+    }
+  }
+  if (!uit.ok) {
+    if (uit.soort === 'aanmelden') { S.sessie = null; bewaar(); sluitDialoog(); teken(); }
+    throw new Error(uit.fout || 'Er ging iets mis.');
+  }
+  return uit;
+}
+
+async function demoServer(req) {
+  await new Promise(r => setTimeout(r, 500));
+  const profiel = { email: req.email || (S.sessie && S.sessie.email), naam: 'Demo Trainer', km: 20, vergoeding: 15, kmTarief: 0.23 };
+  if (req.actie === 'code') return { ok: true };
+  if (req.actie === 'login') return req.code === '123456' ? { ok: true, token: 'demo', profiel: profiel } : { ok: false, fout: 'De code is onjuist of verlopen. (Demo: gebruik 123456.)' };
+  if (req.actie === 'profiel') return { ok: true, profiel: profiel };
+  if (req.actie === 'indienen') {
+    const d = new Date();
+    return { ok: true, referentie: 'DEMO-' + pad(d.getHours()) + pad(d.getMinutes()) + pad(d.getSeconds()), aantal: req.onkosten.length + req.trainingen.length };
+  }
+  return { ok: false, fout: 'Onbekende actie.' };
+}
+
+function bezig(tekst) {
+  const el = h('div', { class: 'bezig', role: 'status' }, h('div', null, h('i'), tekst));
+  document.body.append(el);
+  return () => el.remove();
+}
+
+/* ---------- dialoog ---------- */
+function toonDialoog(...inhoud) {
+  $dlgInhoud.replaceChildren(...inhoud.flat().filter(Boolean));
+  if (!$dlg.open) $dlg.showModal();
+  $dlgInhoud.scrollTop = 0;
+}
+function sluitDialoog() { if ($dlg.open) $dlg.close(); }
+$dlg.addEventListener('click', e => { if (e.target === $dlg) sluitDialoog(); });
+
+function melding(titel, tekst) {
+  toonDialoog(h('h3', null, titel), h('p', null, tekst),
+    h('button', { class: 'knop hoofd breed', onclick: sluitDialoog }, 'Sluiten'));
+}
+
+/* ---------- rekenen ---------- */
+const tarief = () => (S.sessie && S.sessie.kmTarief) || 0.23;
+const trainingBedrag = t => Math.round(t.km * tarief() * 100) / 100 + t.vergoeding;
+const standaard = () => S.std || { km: S.sessie.km, vergoeding: S.sessie.vergoeding };
+const opDatum = (a, b) => a.datum < b.datum ? -1 : a.datum > b.datum ? 1 : 0;
+function eerderIngediend() {
+  const set = new Set();
+  S.ingediend.forEach(i => i.regels.forEach(r => { if (r.soort === 'training' || (!r.soort && i.soort === 'trainingen')) set.add(r.datum); }));
+  return set;
+}
+
+/* ---------- aanmelden ---------- */
+let loginStap = { stap: 1, email: '', fout: '' };
+
+function tekenLogin() {
+  const stap2 = loginStap.stap === 2;
+  const invoer = stap2
+    ? h('input', { type: 'text', inputMode: 'numeric', autocomplete: 'one-time-code', maxLength: 6, pattern: '[0-9]{6}', required: true, placeholder: '6 cijfers' })
+    : h('input', { type: 'email', autocomplete: 'email', required: true, value: loginStap.email, placeholder: 'naam@voorbeeld.nl' });
+
+  const form = h('form', { class: 'kaart', onsubmit: async e => {
+    e.preventDefault();
+    const klaar = bezig(stap2 ? 'Bezig met aanmelden…' : 'Code versturen…');
+    try {
+      if (!stap2) {
+        const email = invoer.value.trim().toLowerCase();
+        await api('code', { email: email });
+        loginStap = { stap: 2, email: email, fout: '' };
+      } else {
+        const uit = await api('login', { email: loginStap.email, code: invoer.value.trim() });
+        if (lees('eigenaar', '') !== uit.profiel.email) await wisAlles();
+        schrijf('eigenaar', uit.profiel.email);
+        S.sessie = Object.assign({ token: uit.token }, uit.profiel);
+        bewaar();
+        loginStap = { stap: 1, email: '', fout: '' };
+      }
+    } catch (err) {
+      loginStap.fout = err.message;
+    }
+    klaar();
+    teken();
+  } },
+    h('h2', { style: 'margin-top:0' }, stap2 ? 'Vul je code in' : 'Aanmelden'),
+    h('p', { class: 'klein' }, stap2
+      ? 'Als ' + loginStap.email + ' bij ons bekend is, staat er binnen een minuut een code in je mail. Geen mail? Kijk in je spam of controleer het adres.'
+      : 'Vul het mailadres in waarmee je bij de vereniging bekend bent. Je krijgt een code per mail.'),
+    loginStap.fout && h('p', { class: 'foutmelding', role: 'alert' }, loginStap.fout),
+    h('label', { class: 'veld' }, stap2 ? 'Code' : 'Mailadres', invoer),
+    h('button', { class: 'knop hoofd breed', type: 'submit' }, stap2 ? 'Aanmelden' : 'Stuur code'),
+    stap2 && h('button', { class: 'tekstknop', type: 'button', onclick: () => { loginStap = { stap: 1, email: loginStap.email, fout: '' }; teken(); } }, 'Ander mailadres of nieuwe code')
+  );
+  $app.replaceChildren(kop(false), h('main', { class: 'wrap' }, form));
+  document.body.classList.remove('met-actie');
+  invoer.focus();
+}
+
+/* ---------- hoofdscherm ---------- */
+function kop(aangemeld) {
+  return h('div', null,
+    h('header', { class: 'kop' }, h('div', { class: 'wrap' },
+      h('h1', null, 'SVZ Declaraties', aangemeld && h('small', null, S.sessie.naam)),
+      aangemeld && h('button', { onclick: vraagAfmelden }, 'Afmelden'))),
+    DEMO && h('div', { class: 'demo' }, 'Demomodus: er wordt niets verstuurd. Code: 123456'));
+}
+
+function vraagAfmelden() {
+  toonDialoog(h('h3', null, 'Afmelden'),
+    h('p', null, 'Afmelden wist ook je concepten en het overzicht van ingediende declaraties op dit toestel.'),
+    h('div', { class: 'knoppen' },
+      h('button', { class: 'knop', onclick: sluitDialoog }, 'Annuleren'),
+      h('button', { class: 'knop gevaar', onclick: async () => { await wisAlles(); sluitDialoog(); teken(); } }, 'Afmelden en wissen')));
+}
+
+function teken() {
+  if (!S.sessie) return tekenLogin();
+  const inhoud = S.tab === 'onkosten' ? tekenOnkosten() : S.tab === 'trainingen' ? tekenTrainingen() : tekenIngediend();
+  const tabs = [['onkosten', 'Onkosten'], ['trainingen', 'Trainingen'], ['ingediend', 'Ingediend']];
+  // De balk telt de geselecteerde regels van beide tabbladen op: het is één inzending.
+  const nOnk = S.onkosten.filter(x => x.sel).length, nTr = S.trainingen.filter(x => x.sel).length;
+  const som = S.onkosten.filter(x => x.sel).reduce((s, x) => s + x.bedrag, 0) + S.trainingen.filter(x => x.sel).reduce((s, x) => s + trainingBedrag(x), 0);
+  const telling = [nOnk && nOnk + (nOnk === 1 ? ' onkostenregel' : ' onkostenregels'), nTr && nTr + (nTr === 1 ? ' training' : ' trainingen')].filter(Boolean).join(' + ');
+  document.body.classList.toggle('met-actie', nOnk + nTr > 0);
+  const y = window.scrollY;
+  $app.replaceChildren(...[
+    kop(true),
+    h('main', { class: 'wrap' }, inhoud),
+    S.tab === 'onkosten' && h('button', { class: 'plus', 'aria-label': 'Onkosten toevoegen', onclick: () => bewerkOnkosten(null) }, '+'),
+    nOnk + nTr > 0 && h('div', { class: 'actiebalk' }, h('div', { class: 'wrap' },
+      h('div', { class: 'som' }, telling, h('b', null, 'Totaal ' + euro(som))),
+      h('button', { class: 'knop hoofd', onclick: () => controleer() }, 'Indienen'))),
+    h('nav', { class: 'tabs' }, h('div', { class: 'wrap', role: 'tablist' }, tabs.map(([id, naam]) =>
+      h('button', { role: 'tab', 'aria-selected': String(S.tab === id), onclick: () => { S.tab = id; teken(); window.scrollTo(0, 0); } }, naam))))
+  ].filter(Boolean));
+  window.scrollTo(0, y);
+}
+
+function kopregel(lijst) {
+  const alles = lijst.length > 0 && lijst.every(x => x.sel);
+  return h('div', { class: 'rij kopregel' },
+    h('label', { class: 'vink' }, h('input', { type: 'checkbox', checked: alles, 'aria-label': 'Alles selecteren',
+      onchange: e => { lijst.forEach(x => x.sel = e.target.checked); bewaar(); teken(); } })),
+    h('span', null, 'Alles selecteren'));
+}
+function vink(item) {
+  return h('label', { class: 'vink' }, h('input', { type: 'checkbox', checked: !!item.sel, 'aria-label': 'Selecteer ' + nlDatum(item.datum),
+    onchange: e => { item.sel = e.target.checked; bewaar(); teken(); } }));
+}
+
+/* ---------- tab Onkosten ---------- */
+function tekenOnkosten() {
+  if (!S.onkosten.length) {
+    return h('div', { class: 'leeg' }, h('p', null, 'Nog geen onkosten.'), h('p', { class: 'klein' }, 'Tik op + om een bonnetje toe te voegen.'));
+  }
+  S.onkosten.sort(opDatum);
+  return h('div', { class: 'lijst' }, kopregel(S.onkosten), S.onkosten.map(o =>
+    h('div', { class: 'rij' }, vink(o),
+      h('button', { class: 'rijknop', onclick: () => bewerkOnkosten(o) },
+        h('span', { class: 'midden' }, h('div', { class: 'titel' }, o.omschrijving), h('div', { class: 'sub' }, dagNaam(o.datum))),
+        h('span', { class: 'bedrag' }, euro(o.bedrag))))));
+}
+
+// Verkleint een foto zodat de mail klein blijft; pdf's gaan ongewijzigd mee.
+async function verwerkBestand(bestand) {
+  if (bestand.type === 'application/pdf') {
+    if (bestand.size > 5 * 1024 * 1024) throw new Error('De pdf is groter dan 5 MB.');
+    return bestand;
+  }
+  if (!bestand.type.startsWith('image/')) throw new Error('Kies een foto of een pdf.');
+  let beeld;
+  try {
+    beeld = await createImageBitmap(bestand);
+  } catch (e) {
+    throw new Error('Deze foto kan niet worden gelezen. Maak een nieuwe foto of kies een jpg.');
+  }
+  const schaal = Math.min(1, 1600 / Math.max(beeld.width, beeld.height));
+  const c = document.createElement('canvas');
+  c.width = Math.round(beeld.width * schaal); c.height = Math.round(beeld.height * schaal);
+  c.getContext('2d').drawImage(beeld, 0, 0, c.width, c.height);
+  const blob = await new Promise(ok => c.toBlob(ok, 'image/jpeg', 0.75));
+  if (!blob) throw new Error('De foto kon niet worden verwerkt.');
+  return blob;
+}
+
+async function bewerkOnkosten(bestaand) {
+  const o = bestaand || { id: nieuwId(), datum: vandaag(), omschrijving: '', bedrag: '', bijlageNaam: '', sel: true };
+  const fDatum = h('input', { type: 'date', required: true, max: vandaag(), value: o.datum });
+  const fOms = h('input', { type: 'text', required: true, maxLength: 200, value: o.omschrijving, placeholder: 'Bijvoorbeeld: pionnen voor de training' });
+  const fBedrag = h('input', { type: 'text', inputMode: 'decimal', required: true, value: o.bedrag === '' ? '' : nlGetal(o.bedrag.toFixed(2)), placeholder: '0,00' });
+  const fBestand = h('input', { type: 'file', accept: 'image/*,application/pdf' });
+  const info = h('div', { class: 'bijlage-info' });
+  const fout = h('p', { class: 'foutmelding', role: 'alert', hidden: true });
+  let nieuweBlob = null;
+
+  const toonInfo = (blob, naam) => {
+    const delen = [];
+    if (blob && blob.type.startsWith('image/')) {
+      const img = h('img', { alt: '' });
+      img.src = URL.createObjectURL(blob);
+      img.onload = () => URL.revokeObjectURL(img.src);
+      delen.push(img);
+    }
+    delen.push(h('span', null, naam ? 'Bijlage: ' + naam : 'Nog geen bijlage gekozen.'));
+    info.replaceChildren(...delen);
+  };
+  toonInfo(null, o.bijlageNaam);
+  if (bestaand) bijlageHaal(o.id).then(b => { if (b && !nieuweBlob) toonInfo(b, o.bijlageNaam); }).catch(() => {});
+
+  // Het verkleinen van een foto kost even tijd; Opslaan wacht daarop.
+  let verwerken = null;
+  fBestand.addEventListener('change', () => {
+    const bestand = fBestand.files[0];
+    if (!bestand) return;
+    fout.hidden = true;
+    info.replaceChildren(h('span', null, 'Bijlage wordt verwerkt…'));
+    verwerken = (async () => {
+      try {
+        nieuweBlob = await verwerkBestand(bestand);
+        toonInfo(nieuweBlob, bestand.name);
+        return true;
+      } catch (err) {
+        nieuweBlob = null; fBestand.value = '';
+        toonInfo(null, o.bijlageNaam);
+        fout.textContent = err.message; fout.hidden = false;
+        return false;
+      }
+    })();
+  });
+
+  const form = h('form', { onsubmit: async e => {
+    e.preventDefault();
+    if (verwerken && !(await verwerken)) return;
+    const bedrag = getal(fBedrag.value);
+    let tekst = '';
+    if (!fDatum.value || fDatum.value > vandaag()) tekst = 'Kies een datum van vandaag of eerder.';
+    else if (!fOms.value.trim()) tekst = 'Vul een omschrijving in.';
+    else if (!(bedrag > 0) || bedrag > 5000) tekst = 'Vul een bedrag in tussen € 0,01 en € 5.000.';
+    else if (!nieuweBlob && !o.bijlageNaam) tekst = 'Voeg een foto of pdf van de bon toe.';
+    if (tekst) { fout.textContent = tekst; fout.hidden = false; return; }
+    fout.hidden = true;
+    try {
+      if (nieuweBlob) { await bijlageZet(o.id, nieuweBlob); o.bijlageNaam = fBestand.files[0] ? fBestand.files[0].name : 'bon'; }
+    } catch (err) {
+      fout.textContent = 'De bijlage kon niet op dit toestel worden bewaard.'; fout.hidden = false; return;
+    }
+    o.datum = fDatum.value; o.omschrijving = fOms.value.trim(); o.bedrag = Math.round(bedrag * 100) / 100;
+    if (!bestaand) S.onkosten.push(o);
+    bewaar(); sluitDialoog(); teken();
+  } },
+    h('h3', null, bestaand ? 'Onkosten wijzigen' : 'Onkosten toevoegen'),
+    h('label', { class: 'veld' }, 'Datum', fDatum),
+    h('label', { class: 'veld' }, 'Omschrijving', fOms),
+    h('label', { class: 'veld' }, 'Bedrag in euro', fBedrag),
+    h('label', { class: 'veld' }, 'Bijlage (foto van de bon of pdf)', fBestand),
+    info, fout,
+    h('div', { class: 'knoppen' },
+      h('button', { class: 'knop', type: 'button', onclick: sluitDialoog }, 'Annuleren'),
+      h('button', { class: 'knop hoofd', type: 'submit' }, 'Opslaan')),
+    bestaand && h('button', { class: 'tekstknop', type: 'button', style: 'color:var(--rood)', onclick: async () => {
+      S.onkosten = S.onkosten.filter(x => x !== o);
+      try { await bijlageWis(o.id); } catch (e) {}
+      bewaar(); sluitDialoog(); teken();
+    } }, 'Verwijderen'));
+  toonDialoog(form);
+}
+
+/* ---------- tab Trainingen ---------- */
+function tekenTrainingen() {
+  const std = standaard();
+  const eigen = !!S.std;
+  const fKm = h('input', { type: 'text', inputMode: 'decimal', value: nlGetal(std.km) });
+  const fVerg = h('input', { type: 'text', inputMode: 'decimal', value: nlGetal(std.vergoeding.toFixed(2)) });
+  const zetStd = () => {
+    const km = getal(fKm.value), verg = getal(fVerg.value);
+    if (!(km >= 0 && km <= 1000) || !(verg >= 0 && verg <= 500)) return melding('Ongeldige waarde', 'Vul bij km en vergoeding een getal in.'), teken();
+    S.std = { km: Math.round(km * 10) / 10, vergoeding: Math.round(verg * 100) / 100 };
+    if (S.std.km === S.sessie.km && S.std.vergoeding === S.sessie.vergoeding) S.std = null;
+    bewaar(); teken();
+  };
+  fKm.addEventListener('change', zetStd); fVerg.addEventListener('change', zetStd);
+
+  const jaar = S.maand.getFullYear(), mnd = S.maand.getMonth();
+  const nu = vandaag();
+  const gekozen = new Map(S.trainingen.map(t => [t.datum, t]));
+  const eerder = eerderIngediend();
+  const leegVoor = (new Date(jaar, mnd, 1).getDay() + 6) % 7; // maandag eerst
+  const dagen = new Date(jaar, mnd + 1, 0).getDate();
+  const cellen = ['ma', 'di', 'wo', 'do', 'vr', 'za', 'zo'].map(d => h('div', { class: 'wd' }, d));
+  for (let i = 0; i < leegVoor; i++) cellen.push(h('div'));
+  for (let d = 1; d <= dagen; d++) {
+    const datum = jaar + '-' + pad(mnd + 1) + '-' + pad(d);
+    const aan = gekozen.has(datum);
+    cellen.push(h('button', {
+      class: [aan && 'gekozen', datum === nu && 'vandaag', eerder.has(datum) && 'eerder'].filter(Boolean).join(' '),
+      disabled: datum > nu, 'aria-pressed': String(aan),
+      'aria-label': dagNaam(datum) + (eerder.has(datum) ? ', eerder ingediend' : ''),
+      onclick: () => {
+        if (aan) S.trainingen = S.trainingen.filter(t => t.datum !== datum);
+        else S.trainingen.push({ id: nieuwId(), datum: datum, km: std.km, vergoeding: std.vergoeding, opmerking: '', sel: true });
+        bewaar(); teken();
+      }
+    }, d));
+  }
+  const volgendeMag = new Date(jaar, mnd + 1, 1) <= new Date();
+  S.trainingen.sort(opDatum);
+
+  return [
+    h('div', { class: 'kaart' },
+      h('div', { class: 'twee' },
+        h('label', { class: 'veld' }, 'Km per training', fKm),
+        h('label', { class: 'veld' }, 'Vergoeding per training', fVerg)),
+      h('div', { class: 'klein' }, 'Nieuwe dagen krijgen deze waarden. Bedrag = km × ' + euro(tarief()) + ' + vergoeding.'),
+      eigen && h('button', { class: 'tekstknop', onclick: () => { S.std = null; bewaar(); teken(); } },
+        'Terug naar mijn standaard (' + nlGetal(S.sessie.km) + ' km, ' + euro(S.sessie.vergoeding) + ')')),
+    h('h2', null, 'Kies je trainingsdagen'),
+    h('div', { class: 'kaart' },
+      h('div', { class: 'kal-kop' },
+        h('button', { 'aria-label': 'Vorige maand', onclick: () => { S.maand = new Date(jaar, mnd - 1, 1); teken(); } }, '‹'),
+        h('strong', null, S.maand.toLocaleDateString('nl-NL', { month: 'long', year: 'numeric' })),
+        h('button', { 'aria-label': 'Volgende maand', disabled: !volgendeMag, onclick: () => { S.maand = new Date(jaar, mnd + 1, 1); teken(); } }, '›')),
+      h('div', { class: 'kal' }, cellen),
+      eerder.size > 0 && h('p', { class: 'klein', style: 'margin:10px 0 0' }, 'Een groene stip betekent: deze dag heb je al eerder ingediend.')),
+    h('h2', null, 'Trainingen'),
+    S.trainingen.length
+      ? h('div', { class: 'lijst' }, kopregel(S.trainingen), S.trainingen.map(t =>
+          h('div', { class: 'rij' }, vink(t),
+            h('button', { class: 'rijknop', onclick: () => bewerkTraining(t) },
+              h('span', { class: 'midden' },
+                h('div', { class: 'titel' }, dagNaam(t.datum)),
+                h('div', { class: 'sub' }, nlGetal(t.km) + ' km · ' + euro(t.vergoeding) + (t.opmerking ? ' · ' + t.opmerking : '')),
+                eerder.has(t.datum) && h('div', { class: 'sub let-op' }, 'Let op: al eerder ingediend')),
+              h('span', { class: 'bedrag' }, euro(trainingBedrag(t)))))))
+      : h('div', { class: 'leeg' }, 'Tik op een dag in de kalender om een training toe te voegen.')
+  ];
+}
+
+function bewerkTraining(t) {
+  const fDatum = h('input', { type: 'date', required: true, max: vandaag(), value: t.datum });
+  const fKm = h('input', { type: 'text', inputMode: 'decimal', required: true, value: nlGetal(t.km) });
+  const fVerg = h('input', { type: 'text', inputMode: 'decimal', required: true, value: nlGetal(t.vergoeding.toFixed(2)) });
+  const fBedrag = h('input', { type: 'text', readOnly: true, tabIndex: -1 });
+  const fOpm = h('textarea', { maxLength: 300, value: t.opmerking || '', placeholder: 'Bijvoorbeeld: assistent' });
+  const fout = h('p', { class: 'foutmelding', role: 'alert', hidden: true });
+  const reken = () => {
+    const km = getal(fKm.value), verg = getal(fVerg.value);
+    fBedrag.value = isNaN(km) || isNaN(verg) ? '' : euro(trainingBedrag({ km: km, vergoeding: verg }));
+  };
+  fKm.addEventListener('input', reken); fVerg.addEventListener('input', reken); reken();
+
+  toonDialoog(h('form', { onsubmit: e => {
+    e.preventDefault();
+    const km = getal(fKm.value), verg = getal(fVerg.value);
+    let tekst = '';
+    if (!fDatum.value || fDatum.value > vandaag()) tekst = 'Kies een datum van vandaag of eerder.';
+    else if (S.trainingen.some(x => x !== t && x.datum === fDatum.value)) tekst = 'Deze dag staat al in de lijst.';
+    else if (!(km >= 0 && km <= 1000)) tekst = 'Vul een aantal km in tussen 0 en 1000.';
+    else if (!(verg >= 0 && verg <= 500)) tekst = 'Vul een vergoeding in tussen € 0 en € 500.';
+    else if (km === 0 && verg === 0) tekst = 'Km en vergoeding zijn allebei nul.';
+    if (tekst) { fout.textContent = tekst; fout.hidden = false; return; }
+    fout.hidden = true;
+    t.datum = fDatum.value; t.km = Math.round(km * 10) / 10; t.vergoeding = Math.round(verg * 100) / 100; t.opmerking = fOpm.value.trim();
+    bewaar(); sluitDialoog(); teken();
+  } },
+    h('h3', null, 'Training wijzigen'),
+    h('label', { class: 'veld' }, 'Datum', fDatum),
+    h('div', { class: 'twee' },
+      h('label', { class: 'veld' }, 'Km', fKm),
+      h('label', { class: 'veld' }, 'Vergoeding', fVerg)),
+    h('label', { class: 'veld' }, 'Bedrag (km × ' + euro(tarief()) + ' + vergoeding)', fBedrag),
+    h('label', { class: 'veld' }, 'Opmerking', fOpm),
+    fout,
+    h('div', { class: 'knoppen' },
+      h('button', { class: 'knop', type: 'button', onclick: sluitDialoog }, 'Annuleren'),
+      h('button', { class: 'knop hoofd', type: 'submit' }, 'Opslaan')),
+    h('button', { class: 'tekstknop', type: 'button', style: 'color:var(--rood)', onclick: () => {
+      S.trainingen = S.trainingen.filter(x => x !== t); bewaar(); sluitDialoog(); teken();
+    } }, 'Verwijderen')));
+}
+
+/* ---------- controleren en indienen ---------- */
+const trainingTekst = x => nlGetal(x.km) + ' km · ' + euro(x.vergoeding) + (x.opmerking ? ' · ' + x.opmerking : '');
+
+function inzendingNaam(i) {
+  const o = i.soort === 'onkosten' || i.regels.some(r => r.soort === 'onkosten');
+  const t = i.soort === 'trainingen' || i.regels.some(r => r.soort === 'training');
+  return o && t ? 'Onkosten en trainingen' : o ? 'Onkosten' : 'Trainingen';
+}
+
+// Eén inzending bevat de geselecteerde regels van beide tabbladen.
+function controleer() {
+  const onk = S.onkosten.filter(x => x.sel).sort(opDatum);
+  const tr = S.trainingen.filter(x => x.sel).sort(opDatum);
+  if (!onk.length && !tr.length) return;
+  const somOnk = onk.reduce((s, x) => s + x.bedrag, 0);
+  const somTr = tr.reduce((s, x) => s + trainingBedrag(x), 0);
+  const eerder = eerderIngediend();
+  const dubbel = tr.filter(x => eerder.has(x.datum));
+  const rij = (datum, tekst, bedrag) => h('tr', null, h('td', null, nlDatum(datum), h('div', { class: 'klein' }, tekst)), h('td', null, euro(bedrag)));
+  const groep = (naam, som) => h('tr', { class: 'groep' }, h('td', null, naam), h('td', null, euro(som)));
+
+  toonDialoog(
+    h('h3', null, 'Controleer je declaratie'),
+    h('table', { class: 'overzicht' }, h('tbody', null,
+      onk.length > 0 && [groep('Onkosten', somOnk), onk.map(x => rij(x.datum, x.omschrijving, x.bedrag))],
+      tr.length > 0 && [groep('Trainingen', somTr), tr.map(x => rij(x.datum, trainingTekst(x), trainingBedrag(x)))],
+      h('tr', { class: 'totaal' }, h('td', null, 'Totaal'), h('td', null, euro(somOnk + somTr))))),
+    dubbel.length > 0 && h('p', { class: 'let-op' }, 'Let op: ' + dubbel.map(x => nlDatum(x.datum)).join(', ') + ' heb je al eerder ingediend.'),
+    h('p', { class: 'klein' }, 'De penningmeester krijgt één mail met dit overzicht' + (onk.length ? ' en de bijlagen' : '') + '. Jij krijgt een kopie op ' + S.sessie.email + '.'),
+    h('div', { class: 'knoppen' },
+      h('button', { class: 'knop', onclick: sluitDialoog }, 'Terug'),
+      h('button', { class: 'knop hoofd', onclick: () => dienIn(onk, tr, somOnk + somTr) }, 'Indienen')));
+}
+
+const naarBase64 = blob => new Promise((ok, fout) => {
+  const r = new FileReader();
+  r.onload = () => ok(String(r.result).split(',')[1]);
+  r.onerror = () => fout(r.error);
+  r.readAsDataURL(blob);
+});
+
+async function dienIn(onk, tr, som) {
+  const klaar = bezig('Bezig met indienen…');
+  try {
+    const onkosten = [];
+    for (const x of onk) {
+      const blob = await bijlageHaal(x.id);
+      if (!blob) throw new Error('De bijlage bij "' + x.omschrijving + '" ontbreekt. Open de regel en voeg de bon opnieuw toe.');
+      onkosten.push({ datum: x.datum, omschrijving: x.omschrijving, bedrag: x.bedrag, bijlage: { data: await naarBase64(blob) } });
+    }
+    const trainingen = tr.map(x => ({ datum: x.datum, km: x.km, vergoeding: x.vergoeding, opmerking: x.opmerking }));
+    const uit = await api('indienen', { token: S.sessie.token, onkosten: onkosten, trainingen: trainingen });
+
+    // Pas na bevestiging van de server verdwijnen de regels uit de lijsten.
+    const ids = new Set(onk.concat(tr).map(x => x.id));
+    S.ingediend.unshift({
+      ref: uit.referentie, tijd: new Date().toISOString(), totaal: Math.round(som * 100) / 100,
+      regels: onk.map(x => ({ soort: 'onkosten', datum: x.datum, tekst: x.omschrijving, bedrag: x.bedrag }))
+        .concat(tr.map(x => ({ soort: 'training', datum: x.datum, tekst: nlGetal(x.km) + ' km · ' + euro(x.vergoeding), bedrag: trainingBedrag(x) })))
+    });
+    S.ingediend = S.ingediend.slice(0, 100);
+    S.onkosten = S.onkosten.filter(x => !ids.has(x.id));
+    S.trainingen = S.trainingen.filter(x => !ids.has(x.id));
+    bewaar();
+    for (const x of onk) { try { await bijlageWis(x.id); } catch (e) {} }
+    klaar(); teken();
+    toonDialoog(h('h3', null, 'Ingediend'),
+      h('p', null, 'Je declaratie van ' + euro(som) + ' is verstuurd naar de penningmeester.'),
+      h('p', { class: 'klein' }, 'Referentie: ' + uit.referentie + '. Je vindt hem terug onder Ingediend.'),
+      h('button', { class: 'knop hoofd breed', onclick: sluitDialoog }, 'Sluiten'));
+  } catch (err) {
+    klaar();
+    if (S.sessie) melding('Indienen is niet gelukt', err.message + ' Je regels staan nog in de lijst.');
+  }
+}
+
+/* ---------- tab Ingediend ---------- */
+function tekenIngediend() {
+  if (!S.ingediend.length) return h('div', { class: 'leeg' }, 'Je hebt op dit toestel nog niets ingediend.');
+  return [
+    h('p', { class: 'klein', style: 'margin-top:0' }, 'Dit overzicht staat alleen op dit toestel.'),
+    h('div', { class: 'lijst' }, S.ingediend.map(i => h('details', { class: 'inzending' },
+      h('summary', null,
+        h('span', { class: 'midden' },
+          h('div', { class: 'titel' }, inzendingNaam(i) + ' · ' + i.regels.length + (i.regels.length === 1 ? ' regel' : ' regels')),
+          h('div', { class: 'sub klein' }, nlDatum(i.tijd.slice(0, 10)) + ' · ' + i.ref)),
+        h('b', null, euro(i.totaal))),
+      h('table', { class: 'overzicht', style: 'margin:8px 0 0' }, h('tbody', null, i.regels.map(r =>
+        h('tr', null, h('td', null, nlDatum(r.datum), h('div', { class: 'klein' }, r.tekst)), h('td', null, euro(r.bedrag)))))))))
+  ];
+}
+
+/* ---------- start ---------- */
+teken();
+if (S.sessie) {
+  // Haalt de actuele standaardwaarden op; mislukt dit, dan blijft de pagina gewoon werken.
+  api('profiel', { token: S.sessie.token }).then(uit => {
+    if (!S.sessie) return;
+    Object.assign(S.sessie, uit.profiel); bewaar();
+    if (!$dlg.open) teken();
+  }).catch(() => {});
+}
+</script>
+</body>
+</html>
